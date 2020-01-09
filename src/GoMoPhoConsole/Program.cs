@@ -165,6 +165,10 @@ namespace GoMoPhoConsole
                 mp4Stream.Seek(0, SeekOrigin.Begin);
                 mp4Stream.Write(fileBytes, indexOfMp4, fileBytes.Length - indexOfMp4);
             }
+            File.SetCreationTime(mp4File, File.GetCreationTime(file));
+            File.SetLastAccessTime(mp4File, File.GetLastAccessTime(file));
+            File.SetLastWriteTime(mp4File, File.GetLastWriteTime(file));
+            // see https://github.com/cliveontoast/GoMoPho/issues/13 for date taken value
             filesToConvert.Enqueue(new FileInfo(mp4File));
 
             if (extractJpeg)
@@ -178,6 +182,11 @@ namespace GoMoPhoConsole
                         jpgStream.Seek(0, SeekOrigin.Begin);
                         jpgStream.Write(fileBytes, 0, jpegEndIdx + 2);
                     }
+                    var attributes = File.GetAttributes(file);
+                    File.SetCreationTime(jpgFile, File.GetCreationTime(file));
+                    File.SetLastAccessTime(jpgFile, File.GetLastAccessTime(file));
+                    File.SetLastWriteTime(jpgFile, File.GetLastWriteTime(file));
+                    // see https://github.com/cliveontoast/GoMoPho/issues/13 for date taken value
                 }
                 else
                 {
